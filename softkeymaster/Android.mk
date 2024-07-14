@@ -14,6 +14,7 @@
 
 LOCAL_PATH := $(call my-dir)
 
+ifneq ($(BOARD_TEE_CONFIG), watchdata)
 include $(CLEAR_VARS)
 ifeq ($(USE_32_BIT_KEYSTORE), true)
 LOCAL_MULTILIB := 32
@@ -27,6 +28,7 @@ LOCAL_SHARED_LIBRARIES := libcrypto liblog libkeystore_binder libsoftkeymaster
 LOCAL_MODULE_TAGS := optional
 LOCAL_ADDITIONAL_DEPENDENCIES := $(LOCAL_PATH)/Android.mk
 include $(BUILD_SHARED_LIBRARY)
+endif
 
 include $(CLEAR_VARS)
 ifeq ($(USE_32_BIT_KEYSTORE), true)

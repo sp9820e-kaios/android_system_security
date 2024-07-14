@@ -441,6 +441,15 @@ public:
 
     bool open() {
         const char* randomDevice = "/dev/urandom";
+        struct stat st;
+        if(stat(randomDevice, &st) == 0){
+        int mode = (st.st_mode & S_IRUSR) | (st.st_mode & S_IWUSR) | (st.st_mode & S_IXUSR)
+                | (st.st_mode & S_IWGRP) | (st.st_mode & S_IRGRP) | (st.st_mode & S_IXGRP)
+                | (st.st_mode & S_IROTH) | (st.st_mode & S_IWOTH) | (st.st_mode & S_IXOTH);
+            ALOGE("access: %o: ", mode);
+        }else{
+            ALOGE("access error: %s: ",  strerror(errno));
+        }
         mRandom = TEMP_FAILURE_RETRY(::open(randomDevice, O_RDONLY));
         if (mRandom < 0) {
             ALOGE("open: %s: %s", randomDevice, strerror(errno));
